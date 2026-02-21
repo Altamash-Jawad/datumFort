@@ -1,6 +1,7 @@
-function Section({ title, text }) {
+function Section({ title, text, id }) {
+
     return (
-      <section style={styles.section}>
+      <section id={id} style={styles.section}>
         <h2 style={styles.title}>{title}</h2>
         <p style={styles.text}>{text}</p>
       </section>
@@ -9,21 +10,25 @@ function Section({ title, text }) {
   
   const styles = {
     section: {
-      padding: "100px 20px",
-      textAlign: "center",
+      padding: "120px 20px",
       borderTop: "1px solid #eee",
     },
     title: {
-      fontSize: "28px",
-      marginBottom: "20px",
+      fontSize: "32px",
+      fontWeight: "600",
+      marginBottom: "24px",
+      textAlign: "center",
     },
     text: {
-      fontSize: "16px",
+      fontSize: "17px",
       color: "#555",
-      maxWidth: "600px",
+      maxWidth: "700px",
       margin: "0 auto",
+      lineHeight: "1.7",
+      textAlign: "center",
     },
   };
+  
   
   export default Section;
   
