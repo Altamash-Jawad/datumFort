@@ -1,26 +1,4 @@
-const steps = [
-    {
-        number: "01",
-        title: "Assess & Strategize",
-        description: "Identifying high-impact opportunities and data readiness.",
-    },
-    {
-        number: "02",
-        title: "Architect & Prototype",
-        description: "Building secure sandbox environments for validation.",
-    },
-    {
-        number: "03",
-        title: "Deploy & Integrate",
-        description:
-            "Seamless production rollout within existing infrastructure.",
-    },
-    {
-        number: "04",
-        title: "Govern & Optimize",
-        description: "Continuous monitoring for performance and safety.",
-    },
-];
+import { steps } from "../constants";
 
 export default function EngagementModel() {
     return (

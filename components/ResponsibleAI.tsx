@@ -1,9 +1,4 @@
-const pillars = [
-    "Bias Mitigation",
-    "GDPR/HIPAA Compliant",
-    "Model Explainability",
-    "Zero-Trust Data Access",
-];
+import { pillars } from "../constants";
 
 export default function ResponsibleAI() {
     return (

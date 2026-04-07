@@ -1,11 +1,4 @@
-const industries = [
-    { abbr: "FS", name: "Financial Services" },
-    { abbr: "HC", name: "Healthcare" },
-    { abbr: "SaaS", name: "Software" },
-    { abbr: "GV", name: "Government" },
-    { abbr: "MF", name: "Manufacturing" },
-    { abbr: "OP", name: "Operations" },
-];
+import { industries } from "../constants";
 
 export default function IndustriesSection() {
     return (

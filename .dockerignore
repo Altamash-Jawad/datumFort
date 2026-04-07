@@ -1,0 +1,8 @@
+.next
+node_modules
+.git
+.env*.local
+__tests__
+*.test.*
+jest.config.js
+jest.setup.js

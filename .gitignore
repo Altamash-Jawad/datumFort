@@ -20,9 +20,17 @@
 # production
 /build
 
+# swc cache
+.swc/
+
 # misc
 .DS_Store
+Thumbs.db
 *.pem
+
+# IDE
+.vscode/
+.idea/
 
 # debug
 npm-debug.log*
