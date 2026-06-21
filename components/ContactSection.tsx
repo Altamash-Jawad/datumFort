@@ -1,20 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import Script from "next/script";
+import {
+    CALENDLY_URL,
+    companySizeOptions,
+    budgetOptions,
+    helpTopicOptions,
+} from "../constants";
 
 interface ContactFormData {
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
-    company: string;
+    companySize: string;
+    phone: string;
+    title: string;
+    helpWith: string;
+    budget: string;
     message: string;
 }
 
 type SubmitStatus = "idle" | "loading" | "success" | "error";
+type ContactTab = "book" | "message";
+
+declare global {
+    interface Window {
+        Calendly?: {
+            initInlineWidget: (opts: {
+                url: string;
+                parentElement: HTMLElement;
+            }) => void;
+        };
+    }
+}
 
 export default function ContactSection() {
+    const [tab, setTab] = useState<ContactTab>("book");
+    const [calendlyLoaded, setCalendlyLoaded] = useState(false);
+    const calendlyRef = useRef<HTMLDivElement>(null);
+
     const [status, setStatus] = useState<SubmitStatus>("idle");
     const [apiError, setApiError] = useState("");
+
+    // (Re)initialise the Calendly inline widget whenever the booking tab
+    // becomes active and the embed script is available.
+    useEffect(() => {
+        if (
+            tab === "book" &&
+            calendlyLoaded &&
+            window.Calendly &&
+            calendlyRef.current
+        ) {
+            calendlyRef.current.innerHTML = "";
+            window.Calendly.initInlineWidget({
+                url: CALENDLY_URL,
+                parentElement: calendlyRef.current,
+            });
+        }
+    }, [tab, calendlyLoaded]);
 
     const {
         register,
@@ -58,9 +103,10 @@ export default function ContactSection() {
                     <div>
                         <h2 className="text-4xl font-extrabold mb-6">Get in Touch</h2>
                         <p className="text-gray-400 text-lg leading-relaxed mb-10 max-w-lg">
-                            Have a project in mind or want to learn how Data Kurator can
-                            accelerate your AI journey? Fill out the form and our team will
-                            get back to you within 24 hours.
+                            Ready to see where AI can move the needle for your
+                            organization? Book a free 30-minute discovery call, or
+                            send us a message and our team will respond within 24
+                            hours.
                         </p>
                         <div className="space-y-6">
                             <div className="flex items-center space-x-4">
@@ -83,8 +129,66 @@ export default function ContactSection() {
                         </div>
                     </div>
 
-                    {/* Right: Contact Form */}
-                    <div className="bg-zinc-900/60 border border-white/10 rounded-2xl p-8 md:p-10">
+                    {/* Right: Booking + Contact Form (tabbed) */}
+                    <div className="bg-zinc-900/60 border border-white/10 rounded-2xl overflow-hidden">
+                        {/* Tab bar */}
+                        <div role="tablist" aria-label="Contact options" className="flex border-b border-white/10">
+                            <button
+                                type="button"
+                                role="tab"
+                                aria-selected={tab === "book"}
+                                onClick={() => setTab("book")}
+                                className={`flex-1 px-4 py-4 text-sm font-bold transition-colors ${
+                                    tab === "book"
+                                        ? "bg-teal-500/10 text-teal-400 border-b-2 border-teal-500"
+                                        : "text-gray-400 hover:text-white"
+                                }`}
+                            >
+                                Book a Call
+                            </button>
+                            <button
+                                type="button"
+                                role="tab"
+                                aria-selected={tab === "message"}
+                                onClick={() => setTab("message")}
+                                className={`flex-1 px-4 py-4 text-sm font-bold transition-colors ${
+                                    tab === "message"
+                                        ? "bg-teal-500/10 text-teal-400 border-b-2 border-teal-500"
+                                        : "text-gray-400 hover:text-white"
+                                }`}
+                            >
+                                Send a Message
+                            </button>
+                        </div>
+
+                        {tab === "book" ? (
+                            <div role="tabpanel" className="p-2 sm:p-4">
+                                <Script
+                                    src="https://assets.calendly.com/assets/external/widget.js"
+                                    strategy="lazyOnload"
+                                    onLoad={() => setCalendlyLoaded(true)}
+                                />
+                                <div
+                                    ref={calendlyRef}
+                                    className="calendly-inline-widget rounded-lg overflow-hidden"
+                                    style={{ minWidth: "320px", height: "660px" }}
+                                >
+                                    {/* Fallback shown until the Calendly widget initialises */}
+                                    <div className="flex flex-col items-center justify-center h-full text-center gap-3 text-gray-400">
+                                        <p>Loading scheduler…</p>
+                                        <a
+                                            href={CALENDLY_URL}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-teal-400 hover:text-teal-300 underline text-sm"
+                                        >
+                                            Open the booking page in a new tab
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div role="tabpanel" className="p-8 md:p-10">
                         {status === "success" ? (
                             <div className="flex flex-col items-center justify-center py-16 text-center space-y-4">
                                 <div className="w-14 h-14 rounded-full bg-teal-500/20 flex items-center justify-center">
@@ -105,29 +209,53 @@ export default function ContactSection() {
                             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} noValidate>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-400 mb-2" htmlFor="contact-name">
-                                            Full Name
+                                        <label className="block text-sm font-medium text-gray-400 mb-2" htmlFor="contact-first-name">
+                                            First Name
                                         </label>
                                         <input
-                                            id="contact-name"
+                                            id="contact-first-name"
                                             type="text"
-                                            placeholder="John Doe"
+                                            placeholder="John"
                                             className={`w-full px-4 py-3 rounded-lg bg-zinc-800 border text-white placeholder-gray-500 focus:outline-none focus:border-teal-500 transition-colors ${
-                                                errors.name ? "border-red-500" : "border-white/10"
+                                                errors.firstName ? "border-red-500" : "border-white/10"
                                             }`}
-                                            {...register("name", {
-                                                required: "Full name is required.",
-                                                minLength: { value: 2, message: "Name must be at least 2 characters." },
-                                                maxLength: { value: 100, message: "Name must be 100 characters or fewer." },
+                                            {...register("firstName", {
+                                                required: "First name is required.",
+                                                minLength: { value: 2, message: "First name must be at least 2 characters." },
+                                                maxLength: { value: 100, message: "First name must be 100 characters or fewer." },
                                             })}
                                         />
-                                        {errors.name && (
-                                            <p className="mt-1 text-xs text-red-400" role="alert">{errors.name.message}</p>
+                                        {errors.firstName && (
+                                            <p className="mt-1 text-xs text-red-400" role="alert">{errors.firstName.message}</p>
                                         )}
                                     </div>
                                     <div>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2" htmlFor="contact-last-name">
+                                            Last Name
+                                        </label>
+                                        <input
+                                            id="contact-last-name"
+                                            type="text"
+                                            placeholder="Doe"
+                                            className={`w-full px-4 py-3 rounded-lg bg-zinc-800 border text-white placeholder-gray-500 focus:outline-none focus:border-teal-500 transition-colors ${
+                                                errors.lastName ? "border-red-500" : "border-white/10"
+                                            }`}
+                                            {...register("lastName", {
+                                                required: "Last name is required.",
+                                                minLength: { value: 2, message: "Last name must be at least 2 characters." },
+                                                maxLength: { value: 100, message: "Last name must be 100 characters or fewer." },
+                                            })}
+                                        />
+                                        {errors.lastName && (
+                                            <p className="mt-1 text-xs text-red-400" role="alert">{errors.lastName.message}</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div>
                                         <label className="block text-sm font-medium text-gray-400 mb-2" htmlFor="contact-email">
-                                            Email Address
+                                            Email
                                         </label>
                                         <input
                                             id="contact-email"
@@ -148,40 +276,138 @@ export default function ContactSection() {
                                             <p className="mt-1 text-xs text-red-400" role="alert">{errors.email.message}</p>
                                         )}
                                     </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2" htmlFor="contact-phone">
+                                            Phone <span className="text-gray-600">(optional)</span>
+                                        </label>
+                                        <input
+                                            id="contact-phone"
+                                            type="tel"
+                                            placeholder="+1 (555) 000-0000"
+                                            className="w-full px-4 py-3 rounded-lg bg-zinc-800 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-teal-500 transition-colors"
+                                            {...register("phone", {
+                                                maxLength: { value: 50, message: "Phone must be 50 characters or fewer." },
+                                            })}
+                                        />
+                                        {errors.phone && (
+                                            <p className="mt-1 text-xs text-red-400" role="alert">{errors.phone.message}</p>
+                                        )}
+                                    </div>
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-400 mb-2" htmlFor="contact-company">
-                                        Company
-                                    </label>
-                                    <input
-                                        id="contact-company"
-                                        type="text"
-                                        placeholder="Your Company"
-                                        className="w-full px-4 py-3 rounded-lg bg-zinc-800 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-teal-500 transition-colors"
-                                        {...register("company", {
-                                            maxLength: { value: 100, message: "Company name must be 100 characters or fewer." },
-                                        })}
-                                    />
-                                    {errors.company && (
-                                        <p className="mt-1 text-xs text-red-400" role="alert">{errors.company.message}</p>
-                                    )}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2" htmlFor="contact-company-size">
+                                            Company Size
+                                        </label>
+                                        <select
+                                            id="contact-company-size"
+                                            defaultValue=""
+                                            className={`w-full px-4 py-3 rounded-lg bg-zinc-800 border text-white focus:outline-none focus:border-teal-500 transition-colors ${
+                                                errors.companySize ? "border-red-500" : "border-white/10"
+                                            }`}
+                                            {...register("companySize", {
+                                                required: "Please select your company size.",
+                                            })}
+                                        >
+                                            <option value="" disabled>
+                                                Select company size
+                                            </option>
+                                            {companySizeOptions.map((size) => (
+                                                <option key={size} value={size}>
+                                                    {size} employees
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {errors.companySize && (
+                                            <p className="mt-1 text-xs text-red-400" role="alert">{errors.companySize.message}</p>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2" htmlFor="contact-title">
+                                            Your Department/Title
+                                        </label>
+                                        <input
+                                            id="contact-title"
+                                            type="text"
+                                            placeholder="e.g. Head of Operations"
+                                            className={`w-full px-4 py-3 rounded-lg bg-zinc-800 border text-white placeholder-gray-500 focus:outline-none focus:border-teal-500 transition-colors ${
+                                                errors.title ? "border-red-500" : "border-white/10"
+                                            }`}
+                                            {...register("title", {
+                                                required: "Your department or title is required.",
+                                                maxLength: { value: 150, message: "Must be 150 characters or fewer." },
+                                            })}
+                                        />
+                                        {errors.title && (
+                                            <p className="mt-1 text-xs text-red-400" role="alert">{errors.title.message}</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2" htmlFor="contact-help-with">
+                                            How can we help?
+                                        </label>
+                                        <select
+                                            id="contact-help-with"
+                                            defaultValue=""
+                                            className={`w-full px-4 py-3 rounded-lg bg-zinc-800 border text-white focus:outline-none focus:border-teal-500 transition-colors ${
+                                                errors.helpWith ? "border-red-500" : "border-white/10"
+                                            }`}
+                                            {...register("helpWith", {
+                                                required: "Please select how we can help.",
+                                            })}
+                                        >
+                                            <option value="" disabled>
+                                                Select a topic
+                                            </option>
+                                            {helpTopicOptions.map((topic) => (
+                                                <option key={topic} value={topic}>
+                                                    {topic}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {errors.helpWith && (
+                                            <p className="mt-1 text-xs text-red-400" role="alert">{errors.helpWith.message}</p>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-400 mb-2" htmlFor="contact-budget">
+                                            Budget <span className="text-gray-600">(optional)</span>
+                                        </label>
+                                        <select
+                                            id="contact-budget"
+                                            defaultValue=""
+                                            className="w-full px-4 py-3 rounded-lg bg-zinc-800 border border-white/10 text-white focus:outline-none focus:border-teal-500 transition-colors"
+                                            {...register("budget")}
+                                        >
+                                            <option value="">Select a budget range</option>
+                                            {budgetOptions.map((range) => (
+                                                <option key={range} value={range}>
+                                                    {range}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {errors.budget && (
+                                            <p className="mt-1 text-xs text-red-400" role="alert">{errors.budget.message}</p>
+                                        )}
+                                    </div>
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-400 mb-2" htmlFor="contact-message">
-                                        Message
+                                        Message <span className="text-gray-600">(optional)</span>
                                     </label>
                                     <textarea
                                         id="contact-message"
-                                        placeholder="Tell us about your project..."
+                                        placeholder="Tell us about your AI goals, needs, and challenges — and the vision you want to achieve."
                                         rows={5}
                                         className={`w-full px-4 py-3 rounded-lg bg-zinc-800 border text-white placeholder-gray-500 focus:outline-none focus:border-teal-500 transition-colors resize-none ${
                                             errors.message ? "border-red-500" : "border-white/10"
                                         }`}
                                         {...register("message", {
-                                            required: "Message is required.",
-                                            minLength: { value: 10, message: "Message must be at least 10 characters." },
                                             maxLength: { value: 5000, message: "Message must be 5000 characters or fewer." },
                                         })}
                                     />
@@ -210,6 +436,8 @@ export default function ContactSection() {
                                     ) : "Send Message"}
                                 </button>
                             </form>
+                        )}
+                            </div>
                         )}
                     </div>
                 </div>

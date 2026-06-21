@@ -6,7 +6,7 @@ export default function HeroSection() {
             <div className="glow-shape"></div>
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <div className="max-w-4xl">
-                    <h1 className="headline-xl font-extrabold mb-8">
+                    <h1 className="headline-xl mb-8">
                         ENTERPRISE DATA,
                         <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">

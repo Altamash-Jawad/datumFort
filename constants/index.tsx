@@ -10,6 +10,7 @@ export interface Step {
     number: string;
     title: string;
     description: string;
+    deliverable: string;
 }
 
 export interface Industry {
@@ -109,24 +110,31 @@ export const services: Service[] = [
 export const steps: Step[] = [
     {
         number: "01",
-        title: "Assess & Strategize",
-        description: "Identifying high-impact opportunities and data readiness.",
+        title: "Discovery Call",
+        description:
+            "A focused session where we map your workflows, data, and the use cases where AI moves the metrics your board cares about.",
+        deliverable: "A prioritized opportunity map — no cost, no commitment.",
     },
     {
         number: "02",
-        title: "Architect & Prototype",
-        description: "Building secure sandbox environments for validation.",
+        title: "Roadmap & Proposal",
+        description:
+            "We translate the highest-impact opportunity into a clear scope, timeline, and fixed price — so you know exactly what you're getting before we start.",
+        deliverable: "A fixed-scope plan with defined ROI and milestones.",
     },
     {
         number: "03",
-        title: "Deploy & Integrate",
+        title: "Build & Deploy",
         description:
-            "Seamless production rollout within existing infrastructure.",
+            "Our team designs, tests, and ships the system into your existing stack — no rip-and-replace. You get weekly updates and a working product, not a deck.",
+        deliverable: "A production system running inside your infrastructure.",
     },
     {
         number: "04",
-        title: "Govern & Optimize",
-        description: "Continuous monitoring for performance and safety.",
+        title: "Govern & Scale",
+        description:
+            "We monitor performance, retrain models, and harden governance so the system stays compliant, accurate, and ready to expand across teams.",
+        deliverable: "Ongoing monitoring, optimization, and support.",
     },
 ];
 
@@ -145,3 +153,35 @@ export const pillars: string[] = [
     "Model Explainability",
     "Zero-Trust Data Access",
 ];
+
+// Contact-form dropdown options. Shared between the form UI and the API route
+// so server-side validation stays in sync with what the user can select.
+export const companySizeOptions: string[] = [
+    "1-20",
+    "21-50",
+    "51-200",
+    "201-500",
+    "501-1100",
+    "1101-5000+",
+];
+
+export const budgetOptions: string[] = [
+    "$0-$50k",
+    "$50k-$100k",
+    "$100k+",
+];
+
+export const helpTopicOptions: string[] = [
+    "AI strategy and roadmap",
+    "AI training and enablement",
+    "Custom AI solution",
+    "AI governance and risk",
+    "General inquiry",
+];
+
+// Scheduling link for the "Book a Call" tab in the contact section.
+// Set NEXT_PUBLIC_CALENDLY_URL in your environment (.env.local) to your real
+// Calendly event URL, e.g. https://calendly.com/datakurator/discovery-call
+export const CALENDLY_URL: string =
+    process.env.NEXT_PUBLIC_CALENDLY_URL ??
+    "https://calendly.com/your-handle/discovery-call";

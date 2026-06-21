@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { UserEvent } from "@testing-library/user-event";
 import ContactSection from "../components/ContactSection";
 
 beforeEach(() => {
@@ -10,17 +11,70 @@ afterEach(() => {
     jest.resetAllMocks();
 });
 
-describe("ContactSection — rendering", () => {
-    it("renders all form fields", () => {
+// The contact card defaults to the "Book a Call" tab, so most tests need to
+// switch to the "Send a Message" tab before the form is rendered.
+async function openMessageTab(user: UserEvent) {
+    await user.click(screen.getByRole("tab", { name: "Send a Message" }));
+}
+
+// Fills every required field with valid values.
+async function fillRequiredFields(user: UserEvent) {
+    await user.type(screen.getByLabelText("First Name"), "Jane");
+    await user.type(screen.getByLabelText("Last Name"), "Doe");
+    await user.type(screen.getByLabelText("Email"), "jane@example.com");
+    await user.selectOptions(screen.getByLabelText("Company Size"), "51-200");
+    await user.type(screen.getByLabelText("Your Department/Title"), "Head of Ops");
+    await user.selectOptions(
+        screen.getByLabelText("How can we help?"),
+        "Custom AI solution"
+    );
+}
+
+describe("ContactSection — tabs", () => {
+    it("renders both contact tabs", () => {
         render(<ContactSection />);
-        expect(screen.getByLabelText("Full Name")).toBeInTheDocument();
-        expect(screen.getByLabelText("Email Address")).toBeInTheDocument();
-        expect(screen.getByLabelText("Company")).toBeInTheDocument();
-        expect(screen.getByLabelText("Message")).toBeInTheDocument();
+        expect(screen.getByRole("tab", { name: "Book a Call" })).toBeInTheDocument();
+        expect(screen.getByRole("tab", { name: "Send a Message" })).toBeInTheDocument();
     });
 
-    it("renders the Send Message button", () => {
+    it("defaults to the booking tab", () => {
         render(<ContactSection />);
+        expect(screen.getByRole("tab", { name: "Book a Call" })).toHaveAttribute(
+            "aria-selected",
+            "true"
+        );
+        // The form is not mounted until the message tab is opened.
+        expect(screen.queryByLabelText("First Name")).not.toBeInTheDocument();
+    });
+
+    it("shows a fallback booking link on the booking tab", () => {
+        render(<ContactSection />);
+        expect(
+            screen.getByRole("link", { name: /open the booking page/i })
+        ).toBeInTheDocument();
+    });
+});
+
+describe("ContactSection — rendering", () => {
+    it("renders all form fields", async () => {
+        const user = userEvent.setup();
+        render(<ContactSection />);
+        await openMessageTab(user);
+        expect(screen.getByLabelText("First Name")).toBeInTheDocument();
+        expect(screen.getByLabelText("Last Name")).toBeInTheDocument();
+        expect(screen.getByLabelText("Email")).toBeInTheDocument();
+        expect(screen.getByLabelText("Company Size")).toBeInTheDocument();
+        expect(screen.getByLabelText(/Phone/)).toBeInTheDocument();
+        expect(screen.getByLabelText("Your Department/Title")).toBeInTheDocument();
+        expect(screen.getByLabelText("How can we help?")).toBeInTheDocument();
+        expect(screen.getByLabelText(/Budget/)).toBeInTheDocument();
+        expect(screen.getByLabelText(/Message/)).toBeInTheDocument();
+    });
+
+    it("renders the Send Message button", async () => {
+        const user = userEvent.setup();
+        render(<ContactSection />);
+        await openMessageTab(user);
         expect(screen.getByRole("button", { name: "Send Message" })).toBeInTheDocument();
     });
 
@@ -39,33 +93,57 @@ describe("ContactSection — validation", () => {
     it("shows required errors when submitting an empty form", async () => {
         const user = userEvent.setup();
         render(<ContactSection />);
+        await openMessageTab(user);
 
         await user.click(screen.getByRole("button", { name: "Send Message" }));
 
         await waitFor(() =>
-            expect(screen.getByText("Full name is required.")).toBeInTheDocument()
+            expect(screen.getByText("First name is required.")).toBeInTheDocument()
         );
+        expect(screen.getByText("Last name is required.")).toBeInTheDocument();
         expect(screen.getByText("Email address is required.")).toBeInTheDocument();
-        expect(screen.getByText("Message is required.")).toBeInTheDocument();
+        expect(screen.getByText("Please select your company size.")).toBeInTheDocument();
+        expect(screen.getByText("Your department or title is required.")).toBeInTheDocument();
+        expect(screen.getByText("Please select how we can help.")).toBeInTheDocument();
     });
 
-    it("shows an error for a name shorter than 2 characters", async () => {
+    it("does not require the optional fields", async () => {
         const user = userEvent.setup();
         render(<ContactSection />);
+        await openMessageTab(user);
 
-        await user.type(screen.getByLabelText("Full Name"), "A");
+        await user.click(screen.getByRole("button", { name: "Send Message" }));
+
+        await waitFor(() =>
+            expect(screen.getByText("First name is required.")).toBeInTheDocument()
+        );
+        // Phone, Budget and Message are optional — no errors for them.
+        expect(screen.queryByText(/phone.*required/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/budget.*required/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/message.*required/i)).not.toBeInTheDocument();
+    });
+
+    it("shows an error for a first name shorter than 2 characters", async () => {
+        const user = userEvent.setup();
+        render(<ContactSection />);
+        await openMessageTab(user);
+
+        await user.type(screen.getByLabelText("First Name"), "A");
         await user.tab();
 
         await waitFor(() =>
-            expect(screen.getByText("Name must be at least 2 characters.")).toBeInTheDocument()
+            expect(
+                screen.getByText("First name must be at least 2 characters.")
+            ).toBeInTheDocument()
         );
     });
 
     it("shows an error for an invalid email format", async () => {
         const user = userEvent.setup();
         render(<ContactSection />);
+        await openMessageTab(user);
 
-        await user.type(screen.getByLabelText("Email Address"), "not-an-email");
+        await user.type(screen.getByLabelText("Email"), "not-an-email");
         await user.tab();
 
         await waitFor(() =>
@@ -73,26 +151,15 @@ describe("ContactSection — validation", () => {
         );
     });
 
-    it("shows an error for a message shorter than 10 characters", async () => {
-        const user = userEvent.setup();
-        render(<ContactSection />);
-
-        await user.type(screen.getByLabelText("Message"), "Short");
-        await user.tab();
-
-        await waitFor(() =>
-            expect(screen.getByText("Message must be at least 10 characters.")).toBeInTheDocument()
-        );
-    });
-
     it("does not call fetch when the form is invalid", async () => {
         const user = userEvent.setup();
         render(<ContactSection />);
+        await openMessageTab(user);
 
         await user.click(screen.getByRole("button", { name: "Send Message" }));
 
         await waitFor(() =>
-            expect(screen.getByText("Full name is required.")).toBeInTheDocument()
+            expect(screen.getByText("First name is required.")).toBeInTheDocument()
         );
         expect(global.fetch).not.toHaveBeenCalled();
     });
@@ -103,10 +170,9 @@ describe("ContactSection — form interaction", () => {
         (global.fetch as jest.Mock).mockImplementation(() => new Promise(() => {}));
         const user = userEvent.setup();
         render(<ContactSection />);
+        await openMessageTab(user);
 
-        await user.type(screen.getByLabelText("Full Name"), "Jane Doe");
-        await user.type(screen.getByLabelText("Email Address"), "jane@example.com");
-        await user.type(screen.getByLabelText("Message"), "A long enough message");
+        await fillRequiredFields(user);
         await user.click(screen.getByRole("button", { name: "Send Message" }));
 
         expect(screen.getByText("Sending…")).toBeInTheDocument();
@@ -120,10 +186,9 @@ describe("ContactSection — form interaction", () => {
         });
         const user = userEvent.setup();
         render(<ContactSection />);
+        await openMessageTab(user);
 
-        await user.type(screen.getByLabelText("Full Name"), "Jane Doe");
-        await user.type(screen.getByLabelText("Email Address"), "jane@example.com");
-        await user.type(screen.getByLabelText("Message"), "A long enough message");
+        await fillRequiredFields(user);
         await user.click(screen.getByRole("button", { name: "Send Message" }));
 
         await waitFor(() =>
@@ -139,14 +204,13 @@ describe("ContactSection — form interaction", () => {
         });
         const user = userEvent.setup();
         render(<ContactSection />);
+        await openMessageTab(user);
 
-        await user.type(screen.getByLabelText("Full Name"), "Jane Doe");
-        await user.type(screen.getByLabelText("Email Address"), "jane@example.com");
-        await user.type(screen.getByLabelText("Message"), "A long enough message");
+        await fillRequiredFields(user);
         await user.click(screen.getByRole("button", { name: "Send Message" }));
 
         await waitFor(() =>
-            expect(screen.queryByLabelText("Full Name")).not.toBeInTheDocument()
+            expect(screen.queryByLabelText("First Name")).not.toBeInTheDocument()
         );
     });
 
@@ -157,10 +221,9 @@ describe("ContactSection — form interaction", () => {
         });
         const user = userEvent.setup();
         render(<ContactSection />);
+        await openMessageTab(user);
 
-        await user.type(screen.getByLabelText("Full Name"), "Jane Doe");
-        await user.type(screen.getByLabelText("Email Address"), "jane@example.com");
-        await user.type(screen.getByLabelText("Message"), "A long enough message");
+        await fillRequiredFields(user);
         await user.click(screen.getByRole("button", { name: "Send Message" }));
 
         await waitFor(() =>
@@ -178,10 +241,9 @@ describe("ContactSection — form interaction", () => {
         });
         const user = userEvent.setup();
         render(<ContactSection />);
+        await openMessageTab(user);
 
-        await user.type(screen.getByLabelText("Full Name"), "Jane Doe");
-        await user.type(screen.getByLabelText("Email Address"), "jane@example.com");
-        await user.type(screen.getByLabelText("Message"), "A long enough message");
+        await fillRequiredFields(user);
         await user.click(screen.getByRole("button", { name: "Send Message" }));
 
         await waitFor(() =>
@@ -195,10 +257,9 @@ describe("ContactSection — form interaction", () => {
         (global.fetch as jest.Mock).mockRejectedValueOnce(new Error("Network failure"));
         const user = userEvent.setup();
         render(<ContactSection />);
+        await openMessageTab(user);
 
-        await user.type(screen.getByLabelText("Full Name"), "Jane Doe");
-        await user.type(screen.getByLabelText("Email Address"), "jane@example.com");
-        await user.type(screen.getByLabelText("Message"), "A long enough message");
+        await fillRequiredFields(user);
         await user.click(screen.getByRole("button", { name: "Send Message" }));
 
         await waitFor(() =>

@@ -5,7 +5,7 @@ export default function ServicesSection() {
         <section id="services" className="py-32 bg-black">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="mb-20">
-                    <h2 className="text-4xl font-bold mb-4">Services</h2>
+                    <h2 className="text-4xl font-bold mb-4">Bridge your organization with AI</h2>
                     <div className="w-20 h-1 bg-teal-500"></div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
