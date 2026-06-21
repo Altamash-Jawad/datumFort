@@ -18,6 +18,11 @@ export interface Industry {
     name: string;
 }
 
+export interface Faq {
+    question: string;
+    answer: string;
+}
+
 export const services: Service[] = [
     {
         title: "Generative AI",
@@ -152,6 +157,39 @@ export const pillars: string[] = [
     "GDPR/HIPAA Compliant",
     "Model Explainability",
     "Zero-Trust Data Access",
+];
+
+export const faqs: Faq[] = [
+    {
+        question: "How quickly can we see results?",
+        answer:
+            "Most engagements go from discovery to a working system in production within 4–8 weeks, depending on scope and how ready your data is.",
+    },
+    {
+        question: "Do we need a mature data platform first?",
+        answer:
+            "No. We meet you where you are — building the pipelines, infrastructure, and governance that production-grade AI depends on is part of the work.",
+    },
+    {
+        question: "Will the AI run on our own infrastructure?",
+        answer:
+            "Yes. We deploy into your existing stack — cloud or on-prem — so your data and your models stay under your control. No rip-and-replace.",
+    },
+    {
+        question: "How do you handle security and compliance?",
+        answer:
+            "Every system is built security-first and mapped to standards like GDPR and HIPAA, with bias mitigation and explainability baked in through our Ethos Framework.",
+    },
+    {
+        question: "What does an engagement cost?",
+        answer:
+            "We scope a fixed price after the discovery call, so you know the investment and the expected ROI before any build begins — no open-ended billing.",
+    },
+    {
+        question: "What if we're not sure AI is the right fit?",
+        answer:
+            "That's exactly what the free discovery call is for. We map the opportunities honestly — and we'll tell you if AI isn't the right answer.",
+    },
 ];
 
 // Contact-form dropdown options. Shared between the form UI and the API route

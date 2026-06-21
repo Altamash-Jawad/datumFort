@@ -28,9 +28,9 @@ export default class ErrorBoundary extends Component<Props, State> {
             return (
                 this.props.fallback ?? (
                     <div className="flex flex-col items-center justify-center py-20 text-center px-6">
-                        <p className="text-gray-400 text-lg mb-2">Something went wrong.</p>
+                        <p className="text-t2 text-lg mb-2">Something went wrong.</p>
                         <button
-                            className="mt-4 text-teal-400 hover:text-teal-300 text-sm underline"
+                            className="mt-4 text-violet hover:text-violet/80 text-sm underline"
                             onClick={() => this.setState({ hasError: false, error: null })}
                         >
                             Try again

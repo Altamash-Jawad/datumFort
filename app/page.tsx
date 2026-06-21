@@ -1,9 +1,12 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
+import TrustBar from "@/components/TrustBar";
 import ServicesSection from "@/components/ServicesSection";
 import EngagementModel from "@/components/EngagementModel";
 import IndustriesSection from "@/components/IndustriesSection";
 import ResponsibleAI from "@/components/ResponsibleAI";
+import FaqSection from "@/components/FaqSection";
+import FinalCta from "@/components/FinalCta";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -34,9 +37,12 @@ export default function Home() {
       <ErrorBoundary>
         <Header />
       </ErrorBoundary>
-      <main>
+      <main id="main">
         <ErrorBoundary>
           <HeroSection />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <TrustBar />
         </ErrorBoundary>
         <ErrorBoundary>
           <ServicesSection />
@@ -49,6 +55,12 @@ export default function Home() {
         </ErrorBoundary>
         <ErrorBoundary>
           <ResponsibleAI />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <FaqSection />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <FinalCta />
         </ErrorBoundary>
       </main>
       <ErrorBoundary>

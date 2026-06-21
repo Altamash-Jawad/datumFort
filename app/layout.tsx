@@ -6,6 +6,7 @@ import "./globals.css";
 const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "600", "700", "800"],
+  variable: "--font-inter",
 });
 
 const SITE_URL = "https://datakurator.com";
@@ -62,7 +63,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-black text-white antialiased`}>
+      <body
+        className={`${inter.variable} ${inter.className} bg-base text-t2 antialiased`}
+        suppressHydrationWarning
+      >
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         {children}
       </body>
     </html>
