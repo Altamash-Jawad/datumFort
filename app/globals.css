@@ -29,7 +29,7 @@
   --color-sky: oklch(0.53 0.13 158); /* green accent */
   --color-live: oklch(0.56 0.15 150);
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Segoe UI", "Helvetica Neue", Arial, ui-sans-serif, system-ui, sans-serif;
 }
 
 /* ──────────────────────────────────────────────────────────────────────────

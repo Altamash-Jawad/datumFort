@@ -1,13 +1,6 @@
-import { Inter } from "next/font/google";
 import { ReactNode } from "react";
 import { Metadata } from "next";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["300", "400", "600", "700", "800"],
-  variable: "--font-inter",
-});
 
 const SITE_URL = "https://datakurator.com";
 const TITLE = "Data Kurator | Enterprise Data, Simplified.";
@@ -63,10 +56,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${inter.className} bg-base text-t2 antialiased`}
-        suppressHydrationWarning
-      >
+      <body className="bg-base text-t2 antialiased" suppressHydrationWarning>
         <a href="#main" className="skip-link">
           Skip to content
         </a>
