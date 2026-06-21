@@ -45,7 +45,7 @@ export default function Header() {
                         <Link
                             key={link.label}
                             href={link.href}
-                            className="relative hover:text-t1 transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-violet after:transition-all hover:after:w-full"
+                            className="relative isolate overflow-hidden rounded-md px-2 py-1 hover:text-t1 transition-colors duration-300 after:pointer-events-none after:absolute after:inset-y-0 after:-left-1/2 after:-z-10 after:w-1/2 after:skew-x-[-20deg] after:bg-gradient-to-r after:from-transparent after:via-violet/25 after:to-transparent after:blur-md after:transition-transform after:duration-700 after:ease-out hover:after:translate-x-[300%]"
                         >
                             {link.label}
                         </Link>

@@ -17,13 +17,16 @@ export default function IndustriesSection() {
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                     {industries.map((industry, i) => (
                         <Reveal
-                            key={industry.abbr}
+                            key={industry.name}
                             delay={(i % 6) * 60}
                             className="flex flex-col items-center group"
                         >
                             <div className="w-16 h-16 rounded-2xl bg-surface border border-edge flex items-center justify-center mb-4 transition-colors duration-200 group-hover:border-edge-hover">
-                                <span className="font-semibold text-t3 transition-colors group-hover:text-violet">
-                                    {industry.abbr}
+                                <span
+                                    className="text-3xl leading-none transition-transform duration-300 group-hover:scale-110"
+                                    aria-hidden="true"
+                                >
+                                    {industry.icon}
                                 </span>
                             </div>
                             <span className="text-xs uppercase tracking-tight font-medium text-t3 text-center">

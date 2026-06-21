@@ -14,8 +14,8 @@ export interface Step {
 }
 
 export interface Industry {
-    abbr: string;
     name: string;
+    icon: ReactNode;
 }
 
 export interface Faq {
@@ -144,12 +144,12 @@ export const steps: Step[] = [
 ];
 
 export const industries: Industry[] = [
-    { abbr: "FS", name: "Financial Services" },
-    { abbr: "HC", name: "Healthcare" },
-    { abbr: "SaaS", name: "Software" },
-    { abbr: "GV", name: "Government" },
-    { abbr: "MF", name: "Manufacturing" },
-    { abbr: "OP", name: "Operations" },
+    { name: "Financial Services", icon: "💳" },
+    { name: "Healthcare", icon: "🏥" },
+    { name: "Software", icon: "💻" },
+    { name: "Government", icon: "🏛️" },
+    { name: "Manufacturing", icon: "🏭" },
+    { name: "Operations", icon: "⚙️" },
 ];
 
 export const pillars: string[] = [
