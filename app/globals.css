@@ -46,6 +46,16 @@ html {
   }
 }
 
+/* Justify body copy for a clean, block-aligned column. Base layer, so explicit
+   alignment utilities (text-center, etc.) still win; single-line paragraphs and
+   final lines stay naturally left-aligned. */
+@layer base {
+  p {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+}
+
 ::selection {
   background: oklch(0.55 0.2 262 / 0.18);
   color: var(--color-t1);

@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Reveal from "./Reveal";
 
+// What we offer (qualitative positioning, not metrics).
 const stats = [
-    { value: "70%", label: "less manual overhead" },
-    { value: "4-week", label: "path to production" },
-    { value: "100%", label: "in your own infrastructure" },
+    { value: "On-prem & cloud", label: "deployed in your own infrastructure" },
+    { value: "PoC creation", label: "validate ideas, fast" },
+    { value: "PoC → production", label: "scale what works" },
 ];
 
 export default function HeroSection() {
@@ -30,7 +31,7 @@ export default function HeroSection() {
 
                     <Reveal delay={120}>
                         <p className="text-lg sm:text-xl text-t2 max-w-2xl mb-12 leading-relaxed">
-                            We help organizations accelerate AI adoption — turning data into
+                            We help organizations accelerate AI adoption, turning data into
                             production-grade systems that ship in weeks and drive measurable
                             business value.
                         </p>

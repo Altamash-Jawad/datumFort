@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -30,11 +31,30 @@ export default function Header() {
         >
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <Link
-                    href="#"
-                    className="text-2xl font-semibold tracking-tighter text-t1"
-                    aria-label="Data Kurator — home"
+                    href="/"
+                    onClick={(e) => {
+                        // Already on the homepage: smooth-scroll to top instead of a no-op nav.
+                        if (window.location.pathname === "/") {
+                            e.preventDefault();
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                        }
+                    }}
+                    className="flex items-center gap-2.5 text-2xl font-semibold tracking-tighter text-t1"
+                    aria-label="Quidity home"
                 >
-                    DATA <span className="text-violet">KURATOR</span>
+                    <Image
+                        src="/logo.svg"
+                        alt=""
+                        aria-hidden="true"
+                        width={36}
+                        height={30}
+                        priority
+                        unoptimized
+                        className="h-9 w-auto"
+                    />
+                    <span>
+                        QUID<span className="text-violet">ITY</span>
+                    </span>
                 </Link>
 
                 <nav

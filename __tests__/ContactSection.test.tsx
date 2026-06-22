@@ -80,7 +80,7 @@ describe("ContactSection — rendering", () => {
 
     it("renders contact info (email address)", () => {
         render(<ContactSection />);
-        expect(screen.getByText("info@datakurator.com")).toBeInTheDocument();
+        expect(screen.getByText("altamash.jd7@gmail.com")).toBeInTheDocument();
     });
 
     it("renders the section heading", () => {

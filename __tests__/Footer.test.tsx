@@ -4,8 +4,8 @@ import Footer from "../components/Footer";
 describe("Footer", () => {
     it("renders the brand logo", () => {
         render(<Footer />);
-        expect(screen.getByText("DATA")).toBeInTheDocument();
-        expect(screen.getByText("KURATOR")).toBeInTheDocument();
+        expect(screen.getByText("QUID")).toBeInTheDocument();
+        expect(screen.getByText("ITY")).toBeInTheDocument();
     });
 
     it("renders the tagline", () => {
@@ -23,7 +23,7 @@ describe("Footer", () => {
 
     it("renders the copyright notice", () => {
         render(<Footer />);
-        expect(screen.getByText(/© 2025 Data Kurator/i)).toBeInTheDocument();
+        expect(screen.getByText(/© 2025 Quidity/i)).toBeInTheDocument();
     });
 
     it("renders a <footer> landmark element", () => {

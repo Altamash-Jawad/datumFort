@@ -1,6 +1,6 @@
-# Data Kurator — Homepage
+# Quidity — Homepage
 
-Enterprise marketing website for **Data Kurator**, an AI consulting firm helping organizations accelerate AI adoption through MVPs, PoCs, production-grade AI systems, and scalable data pipelines.
+Enterprise marketing website for **Quidity**, an AI consulting firm helping organizations accelerate AI adoption through MVPs, PoCs, production-grade AI systems, and scalable data pipelines.
 
 Built with [Next.js](https://nextjs.org/) (App Router), [TypeScript](https://www.typescriptlang.org/), and [Tailwind CSS](https://tailwindcss.com/), and configured for deployment on Cloudflare Workers via OpenNext.
 
@@ -155,11 +155,35 @@ Do not use `npx wrangler deploy` as the deploy command for this repo. That gener
 
 #### Required Cloudflare environment variables
 
-Set these in the Cloudflare dashboard for both build/runtime as needed:
+> **Important:** the Cloudflare Worker runtime does **not** read `.env.local`. That
+> file only feeds local `next dev` and `next build`. Variables must be provisioned
+> on the Worker itself, or the contact form will fail at runtime with a 500
+> (`new Resend(undefined)`).
 
-- `RESEND_API_KEY`
-- `CONTACT_EMAIL`
+Secrets — set with `wrangler secret put` (encrypted, never committed):
+
+```bash
+npx wrangler secret put RESEND_API_KEY
+npx wrangler secret put CONTACT_EMAIL
+```
+
+Public/non-secret vars — add to `wrangler.jsonc` under `"vars"`, or set in the
+Cloudflare dashboard:
+
 - `NEXT_PUBLIC_CALENDLY_URL`
+
+For local `wrangler dev` / `npm run preview`, mirror the secrets into `.dev.vars`
+(git-ignored), since that runtime also ignores `.env.local`:
+
+```
+RESEND_API_KEY=re_...
+CONTACT_EMAIL=you@example.com
+```
+
+> **Resend sender note:** the default `from` is the shared `onboarding@resend.dev`,
+> which can only deliver to the email address that owns the Resend account. To send
+> to any other recipient (e.g. `altamash.jd7@gmail.com`), verify the `quidity.com`
+> domain in Resend and change the `from` address in `app/api/contact/route.ts`.
 
 #### Naming note
 
@@ -177,4 +201,4 @@ Use the provided `Dockerfile` and `docker-compose.yml` for self-hosted deploymen
 
 ## License
 
-© 2025 Data Kurator. All rights reserved.
+© 2025 Quidity. All rights reserved.

@@ -14,12 +14,12 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Data Kurator",
-  url: "https://datakurator.com",
-  logo: "https://datakurator.com/logo.png",
+  name: "Quidity",
+  url: "https://quidity.dev",
+  logo: "https://quidity.dev/logo.png",
   contactPoint: {
     "@type": "ContactPoint",
-    email: "info@datakurator.com",
+    email: "altamash.jd7@gmail.com",
     contactType: "customer support",
   },
   description:

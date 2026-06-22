@@ -158,7 +158,7 @@ export default function ContactSection() {
                                         <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
                                     </svg>
                                 </div>
-                                <span className="text-t2">info@datakurator.com</span>
+                                <span className="text-t2">info@quidity.dev</span>
                             </div>
                             <div className="flex items-center space-x-4">
                                 <div className="w-10 h-10 rounded-full bg-surface-2 flex items-center justify-center">
@@ -167,7 +167,7 @@ export default function ContactSection() {
                                         <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
                                     </svg>
                                 </div>
-                                <span className="text-t2">Worldwide — Remote First</span>
+                                <span className="text-t2">Worldwide, Remote First</span>
                             </div>
                         </div>
                     </div>
@@ -225,7 +225,7 @@ export default function ContactSection() {
                                         <div className="absolute inset-0 flex flex-col items-center justify-center text-center gap-5 px-6 bg-base">
                                             {widgetState === "error" ? (
                                                 <p className="text-t2 text-sm max-w-xs">
-                                                    The scheduler couldn&apos;t load — this is
+                                                    The scheduler couldn&apos;t load. This is
                                                     usually browser tracking protection or a privacy
                                                     extension blocking Calendly. You can still book
                                                     using the link below.
@@ -514,7 +514,7 @@ export default function ContactSection() {
                                     </label>
                                     <textarea
                                         id="contact-message"
-                                        placeholder="Tell us about your AI goals, needs, and challenges — and the vision you want to achieve."
+                                        placeholder="Tell us about your AI goals, needs, and challenges, and the vision you want to achieve."
                                         rows={5}
                                         className={`w-full px-4 py-3 rounded-lg bg-surface border text-t1 placeholder-t3 focus:outline-none focus:border-violet transition-colors resize-none ${
                                             errors.message ? "border-red-500" : "border-edge"

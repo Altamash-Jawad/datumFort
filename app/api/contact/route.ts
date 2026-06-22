@@ -90,7 +90,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
             from: "Contact Form <onboarding@resend.dev>",
-            to: process.env.CONTACT_EMAIL ?? "info@datakurator.com",
+            to: process.env.CONTACT_EMAIL ?? "altamash.jd7@gmail.com",
             replyTo: sanitizedEmail,
             subject: `New enquiry: ${escapeHtml(helpWith)} — ${fullName}`,
             html: `

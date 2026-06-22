@@ -17,7 +17,7 @@ export default function EngagementModel() {
                             How We Work
                         </h2>
                         <p className="text-t2">
-                            From first call to a system running in production — a clear path,
+                            From first call to a system running in production: a clear path,
                             fixed scope, no surprises.
                         </p>
                     </div>

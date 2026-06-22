@@ -14,7 +14,7 @@ export default function FinalCta() {
                             </h2>
                             <p className="text-lg text-t2 mb-10">
                                 Book a free 30-minute discovery call. Walk away with a prioritized
-                                opportunity map — no cost, no commitment.
+                                opportunity map. No cost, no commitment.
                             </p>
                             <Link
                                 href="#contact"

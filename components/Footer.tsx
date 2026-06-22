@@ -32,9 +32,9 @@ export default function Footer() {
                         <Link
                             href="#"
                             className="text-2xl font-bold tracking-tighter mb-6 block"
-                            aria-label="Data Kurator — home"
+                            aria-label="Quidity home"
                         >
-                            DATA <span className="text-violet">KURATOR</span>
+                            QUID<span className="text-violet">ITY</span>
                         </Link>
                         <p className="text-t2 max-w-sm mb-8">
                             Empowering the world&apos;s most critical enterprises with
@@ -84,7 +84,7 @@ export default function Footer() {
                     </nav>
                 </div>
                 <div className="pt-10 border-t border-edge text-center text-xs text-t3">
-                    © 2025 Data Kurator. All rights reserved. Built for global enterprise.
+                    © 2025 Quidity. All rights reserved. Built for global enterprise.
                 </div>
             </div>
         </footer>

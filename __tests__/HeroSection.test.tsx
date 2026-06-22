@@ -4,7 +4,7 @@ import HeroSection from "../components/HeroSection";
 describe("HeroSection", () => {
     it("renders the main headline", () => {
         render(<HeroSection />);
-        expect(screen.getByText("Enterprise data,")).toBeInTheDocument();
+        expect(screen.getByText("Enterprise AI,")).toBeInTheDocument();
         expect(screen.getByText("simplified.")).toBeInTheDocument();
     });
 

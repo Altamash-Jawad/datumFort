@@ -2,8 +2,8 @@ import { ReactNode } from "react";
 import { Metadata } from "next";
 import "./globals.css";
 
-const SITE_URL = "https://datakurator.com";
-const TITLE = "Data Kurator | Enterprise Data, Simplified.";
+const SITE_URL = "https://quidity.dev";
+const TITLE = "Quidity | Enterprise Data, Simplified.";
 const DESCRIPTION =
   "We help organizations accelerate AI adoption by building MVPs, PoCs, production-grade AI systems, and scalable data pipelines that drive measurable business value.";
 
@@ -20,20 +20,20 @@ export const metadata: Metadata = {
     "data pipeline",
     "AI consulting",
   ],
-  authors: [{ name: "Data Kurator", url: SITE_URL }],
-  creator: "Data Kurator",
+  authors: [{ name: "Quidity", url: SITE_URL }],
+  creator: "Quidity",
   openGraph: {
     type: "website",
     url: SITE_URL,
     title: TITLE,
     description: DESCRIPTION,
-    siteName: "Data Kurator",
+    siteName: "Quidity",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Data Kurator — Enterprise Data, Simplified.",
+        alt: "Quidity: Enterprise Data, Simplified.",
       },
     ],
   },

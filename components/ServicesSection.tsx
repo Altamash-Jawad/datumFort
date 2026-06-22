@@ -1,11 +1,11 @@
 import { services } from "../constants";
 import Reveal from "./Reveal";
 
-// Per-card accent: glow class + pip tint + icon colour, cycled for rhythm.
+// Per-card accent: glow class + soft tinted tile behind the emoji, cycled for rhythm.
 const accents = [
-    { glow: "", pipBg: "oklch(0.94 0.04 262)", icon: "text-violet" },
-    { glow: "glow-amber", pipBg: "oklch(0.94 0.05 75)", icon: "text-amber" },
-    { glow: "glow-sky", pipBg: "oklch(0.94 0.04 158)", icon: "text-sky" },
+    { glow: "", pipBg: "oklch(0.94 0.04 262)" },
+    { glow: "glow-amber", pipBg: "oklch(0.94 0.05 75)" },
+    { glow: "glow-sky", pipBg: "oklch(0.94 0.04 158)" },
 ];
 
 export default function ServicesSection() {
@@ -21,7 +21,7 @@ export default function ServicesSection() {
                             Bridge your organization with AI
                         </h2>
                         <p className="text-t2 leading-relaxed">
-                            From first prototype to governed production systems — capabilities
+                            From first prototype to governed production systems, with capabilities
                             that turn your data into measurable outcomes.
                         </p>
                     </div>
@@ -38,19 +38,11 @@ export default function ServicesSection() {
                                 className={`card ${a.glow} h-full p-7`}
                             >
                                 <div
-                                    className={`mb-6 inline-flex h-11 w-11 items-center justify-center rounded-[10px] ${a.icon}`}
+                                    className="mb-6 inline-flex h-11 w-11 items-center justify-center rounded-[10px] text-2xl leading-none"
                                     style={{ background: a.pipBg }}
+                                    aria-hidden="true"
                                 >
-                                    <svg
-                                        className="h-6 w-6"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        aria-hidden="true"
-                                    >
-                                        {service.icon}
-                                    </svg>
+                                    {service.icon}
                                 </div>
                                 <h3 className="text-lg font-semibold mb-2 text-t1">{service.title}</h3>
                                 <p className="text-t2 text-sm leading-relaxed">
