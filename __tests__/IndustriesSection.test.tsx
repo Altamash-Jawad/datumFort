@@ -17,10 +17,10 @@ describe("IndustriesSection", () => {
         });
     });
 
-    it("renders the abbreviation for every industry", () => {
+    it("renders the icon for every industry", () => {
         render(<IndustriesSection />);
         industries.forEach((industry) => {
-            expect(screen.getByText(industry.abbr)).toBeInTheDocument();
+            expect(screen.getByText(industry.icon)).toBeInTheDocument();
         });
     });
 

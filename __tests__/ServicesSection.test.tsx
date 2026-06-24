@@ -5,7 +5,7 @@ import { services } from "../constants";
 describe("ServicesSection", () => {
     it("renders the section heading", () => {
         render(<ServicesSection />);
-        expect(screen.getByRole("heading", { name: "Services" })).toBeInTheDocument();
+        expect(screen.getByRole("heading", { name: "Bridge your organization with AI" })).toBeInTheDocument();
     });
 
     it("renders a card for every service in constants", () => {

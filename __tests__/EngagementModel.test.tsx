@@ -6,14 +6,14 @@ describe("EngagementModel", () => {
     it("renders the section heading", () => {
         render(<EngagementModel />);
         expect(
-            screen.getByRole("heading", { name: "Engagement Model" })
+            screen.getByRole("heading", { name: "How We Work" })
         ).toBeInTheDocument();
     });
 
     it("renders the subtitle", () => {
         render(<EngagementModel />);
         expect(
-            screen.getByText(/structured path to enterprise-wide intelligence/i)
+            screen.getByText(/a system running in production/i)
         ).toBeInTheDocument();
     });
 
@@ -35,6 +35,13 @@ describe("EngagementModel", () => {
         render(<EngagementModel />);
         steps.forEach((step) => {
             expect(screen.getByText(step.description)).toBeInTheDocument();
+        });
+    });
+
+    it("renders every step deliverable", () => {
+        render(<EngagementModel />);
+        steps.forEach((step) => {
+            expect(screen.getByText(step.deliverable)).toBeInTheDocument();
         });
     });
 });

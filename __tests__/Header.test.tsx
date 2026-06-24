@@ -4,8 +4,8 @@ import Header from "../components/Header";
 describe("Header", () => {
     it("renders the brand logo text", () => {
         render(<Header />);
-        expect(screen.getByText("DATA")).toBeInTheDocument();
-        expect(screen.getByText("KURATOR")).toBeInTheDocument();
+        expect(screen.getByText("QUID")).toBeInTheDocument();
+        expect(screen.getByText("ITY")).toBeInTheDocument();
     });
 
     it("renders all navigation links", () => {
